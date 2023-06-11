@@ -1,0 +1,229 @@
+organisms:
+  golden_spiny_mouse:
+    name: Golden spiny mouse
+    binomial_name: Acomys russatus
+    clade: Placental
+    gcf_id: GCF_903995435.1
+    filename: GCF_903995435.1_mAcoRus1.1_genomic
+    url: https://www.ncbi.nlm.nih.gov/assembly/GCF_903995435.1/
+  elephant:
+    name: Asiatic elephant
+    binomial_name: Elephas maximus indicus
+    clade: Placental
+    gcf_id: GCF_024166365.1
+    filename: GCF_024166365.1_mEleMax1_primary_haplotype_genomic
+    url: https://www.ncbi.nlm.nih.gov/assembly/GCF_024166365.1/
+  aardvark:
+    name: Aardvark
+    binomial_name: Orycteropus afer
+    clade: Placental
+    gcf_id: GCF_000298275.1
+    filename: GCF_000298275.1_OryAfe1.0_genomic
+    url: https://www.ncbi.nlm.nih.gov/assembly/GCF_000298275.1/
+  human:
+    name: Human
+    binomial_name: Homo sapiens
+    clade: Placental
+    gcf_id: GCF_000001405.40
+    filename: GCF_000001405.40_GRCh38.p14_genomic
+    url: https://www.ncbi.nlm.nih.gov/assembly/GCF_000001405.40/
+  rhesus_macaque:
+    name: Rhesus Macaque
+    binomial_name: Macaca mulatta
+    clade: Placental
+    gcf_id: GCF_003339765.1
+    filename: GCF_003339765.1_Mmul_10_genomic
+    url: https://www.ncbi.nlm.nih.gov/assembly/GCF_003339765.1/
+  platypus:
+    name: Platypus
+    binomial_name: Ornithorhynchus anatinus
+    clade: Monotremata
+    gcf_id: GCF_004115215.2
+    filename: GCF_004115215.2_mOrnAna1.pri.v4_genomic
+    url: https://www.ncbi.nlm.nih.gov/assembly/GCF_004115215.2/
+  mardo:
+    name: Yellow-footed Antechinus
+    binomial_name: Antechinus flavipes
+    clade: Marsupials
+    gcf_id: GCF_016432865.1
+    filename: GCF_016432865.1_AdamAnt_v2_genomic
+    url: https://www.ncbi.nlm.nih.gov/assembly/GCF_016432865.1/
+  agile_gracile_mouse_opossum:
+    name: Agile Gracile Mouse Opossum
+    binomial_name: Gracilinanus agilis
+    clade: Marsupials
+    gcf_id: GCF_016433145.1
+    filename: GCF_016433145.1_AgileGrace_genomic
+    url: https://www.ncbi.nlm.nih.gov/assembly/GCF_016433145.1/
+  monito_del_monte:
+    name: Monito del monte
+    binomial_name: Dromiciops gliroides
+    clade: Marsupials
+    gcf_id: GCF_019393635.1
+    filename: GCF_019393635.1_mDroGli1.pri_genomic
+    url: https://www.ncbi.nlm.nih.gov/assembly/GCF_019393635.1/
+  chicken:
+    name: Chicken
+    binomial_name: Gallus gallus
+    clade: Birds
+    gcf_id: GCF_016699485.2
+    filename: GCF_016699485.2_bGalGal1.mat.broiler.GRCg7b_genomic
+    url: https://www.ncbi.nlm.nih.gov/assembly/GCF_016699485.2
+  zebra_finch:
+    name: Zebra Finch
+    binomial_name: Taeniopygia guttata
+    clade: Birds
+    gcf_id: GCF_003957565.2
+    filename: GCF_003957565.2_bTaeGut1.4.pri_genomic
+    url: https://www.ncbi.nlm.nih.gov/assembly/GCF_003957565.2/
+  townsends_dwarf_sphaero:
+    name: Townsend's dwarf sphaero
+    binomial_name: Sphaerodactylus townsendi
+    clade: Lizard
+    gcf_id: GCF_021028975.2
+    filename: GCF_021028975.2_MPM_Stown_v2.3_genomic
+    url: https://www.ncbi.nlm.nih.gov/assembly/GCF_021028975.2/
+  fence_lizard:
+    name: Fence lizard
+    binomial_name: Sceloporus undulatus
+    clade: Lizard
+    gcf_id: GCF_019175285.1
+    filename: GCF_019175285.1_SceUnd_v1.1_genomic
+    url: https://www.ncbi.nlm.nih.gov/assembly/GCF_019175285.1/
+  aeolian_wall_lizard:
+    name: Aeolian wall lizard
+    binomial_name: Podarcis raffonei
+    clade: Lizard
+    gcf_id: GCF_027172205.1
+    filename: GCF_027172205.1_rPodRaf1.pri_genomic
+    url: https://www.ncbi.nlm.nih.gov/assembly/GCF_027172205.1/
+  western_painted_turtle:
+    name: Western painted turtle
+    binomial_name: Chrysemys picta bellii
+    clade: Turtle
+    gcf_id: GCF_000241765.4
+    filename: GCF_000241765.4_Chrysemys_picta_BioNano-3.0.4_genomic
+    url: https://www.ncbi.nlm.nih.gov/assembly/GCF_000241765.4/
+  mexican_gopher_tortoise:
+    name: Mexican gopher tortoise
+    binomial_name: Gopherus flavomarginatus
+    clade: Turtle
+    gcf_id: GCF_025201925.1
+    filename: GCF_025201925.1_rGopFla2.mat.asm_genomic
+    url: https://www.ncbi.nlm.nih.gov/assembly/GCF_025201925.1/
+  loggerhead_turtle:
+    name: Loggerhead turtle
+    binomial_name: Caretta caretta
+    clade: Turtle
+    gcf_id: GCF_023653815.1
+    filename: GCF_023653815.1_GSC_CCare_1.0_genomic
+    url: https://www.ncbi.nlm.nih.gov/assembly/GCF_023653815.1/
+  cat:
+    name: Domestic cat
+    binomial_name: Felis catus
+    clade: Placental
+    gcf_id: GCF_018350175.1
+    filename: GCF_018350175.1_F.catus_Fca126_mat1.0_genomic
+    url: https://www.ncbi.nlm.nih.gov/assembly/GCF_018350175.1/
+  lion:
+    name: Lion
+    binomial_name: Panthera leo
+    clade: Placental
+    gcf_id: GCF_018350215.1
+    filename: GCF_018350215.1_P.leo_Ple1_pat1.1_genomic
+    url: https://www.ncbi.nlm.nih.gov/assembly/GCF_018350215.1/
+  dingo:
+    name: Dingo
+    binomial_name: Canis lupus dingo
+    clade: Placental
+    gcf_id: GCF_003254725.2
+    filename: GCF_003254725.2_ASM325472v2_genomic
+    url: https://www.ncbi.nlm.nih.gov/assembly/GCF_003254725.2/
+  african_clawed_frog:
+    name: African clawed frog
+    binomial_name: Xenopus laevis
+    clade: Frog
+    filename: GCF_017654675.1_Xenopus_laevis_v10.1_genomic
+    gcf_id: GCF_017654675.1
+    url: https://www.ncbi.nlm.nih.gov/assembly/GCF_017654675.1/
+  plains_spadefoot_toad:
+    name: Plains spadefoot toad
+    binomial_name: Spea bombifrons
+    clade: Frog
+    gcf_id: GCF_027358695.1
+    filename: GCF_027358695.1_aSpeBom1.2.pri_genomic
+    url: https://www.ncbi.nlm.nih.gov/assembly/GCF_027358695.1/
+  asiatic_toad:
+    name: Asiatic toad
+    binomial_name: Bufo gargarizans
+    clade: Frog
+    gcf_id: GCF_014858855.1
+    filename: GCF_014858855.1_ASM1485885v1_genomic
+    url: https://www.ncbi.nlm.nih.gov/assembly/GCF_014858855.1/
+  west_african_lungfish:
+    name: West African lungfish
+    binomial_name: Protopterus annectens
+    clade: Lungfish
+    gcf_id: GCF_019279795.1
+    filename: GCF_019279795.1_PAN1.0_genomic
+    url: https://www.ncbi.nlm.nih.gov/assembly/GCF_019279795.1/
+  reedfish:
+    name: Reedfish
+    binomial_name: Erpetoichthys calabaricus
+    clade: Ray-finned fishes
+    gcf_id: GCF_900747795.2
+    filename: GCF_900747795.2_fErpCal1.3_genomic
+    url: https://www.ncbi.nlm.nih.gov/assembly/GCF_900747795.2/
+  mexican_tetra:
+    name: Mexican tetra
+    binomial_name: Astyanax mexicanus
+    clade: Ray-finned fishes (Actinopteri)
+    gcf_id: GCF_023375975.1
+    filename: GCF_023375975.1_AstMex3_surface_genomic
+    url: https://www.ncbi.nlm.nih.gov/assembly/GCF_023375975.1/
+  whitespotted_bambooshark:
+    name: Whitespotted Bambooshark
+    binomial_name: Chiloscyllium plagiosum
+    clade: Cartilaginous Fishes (Shark)
+    gcf_id: GCF_004010195.1
+    filename: GCF_004010195.1_ASM401019v2_genomic
+    url: https://www.ncbi.nlm.nih.gov/assembly/GCF_004010195.1/
+  thorny_skate:
+    name: Thorny Skate
+    binomial_name: Amblyraja radiata
+    clade: Cartilaginous Fishes (Ray)
+    gcf_id: GCF_010909765.2
+    filename: GCF_010909765.2_sAmbRad1.1.pri_genomic
+    url: https://www.ncbi.nlm.nih.gov/assembly/GCF_010909765.2/
+  great_white_shark:
+    name: Great White Shark
+    binomial_name: Carcharodon carcharias
+    clade: Cartilaginous Fishes (Shark)
+    gcf_id: GCF_017639515.1
+    filename: GCF_017639515.1_sCarCar2.pri_genomic
+    url: https://www.ncbi.nlm.nih.gov/assembly/GCF_017639515.1/
+  coelacanth:
+    name: Coelacanth
+    binomial_name: Latimeria chalumnae
+    clade: Latimeria
+    gcf_id: GCF_000225785.1
+    filename: GCF_000225785.1_LatCha1_genomic
+    url: https://www.ncbi.nlm.nih.gov/assembly/GCF_000225785.1/
+  australian_saltwater_crocodile:
+    name: Australian saltwater crocodile
+    binomial_name: Crocodylus porosus
+    clade: Crocodilians
+    gcf_id: GCF_001723895.1
+    filename: GCF_001723895.1_CroPor_comp1_genomic
+    url: https://www.ncbi.nlm.nih.gov/assembly/GCF_001723895.1/
+  sheep:
+    name: Sheep
+    binomial_name: Ovis aries
+    clade: Placental (Artiodactyla)
+    gcf_id: GCF_016772045.1
+    filename: GCF_016772045.1_ARS-UI_Ramb_v2.0_genomic
+    url: https://www.ncbi.nlm.nih.gov/assembly/GCF_016772045.1/
+
+directories:
+  raw: 'data/raw/'
+  interim: 'data/interim/'

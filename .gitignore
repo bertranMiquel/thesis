@@ -1,0 +1,9 @@
+# Folders
+
+Old/ # - Old versions of the code
+k_mers_generation/ # - Code for k-mers generation from Dmitrii
+.ipynb_checkpoints/ # - Jupyter notebook checkpoints
+
+
+function_representation.ipynb # - Jupyter notebook with the code for representation
+test.ipynb # - Jupyter notebook with the code for testing
