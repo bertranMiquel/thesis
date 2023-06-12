@@ -1,1 +1,1 @@
-'../Python files structure.md'
+../py_structure.md
