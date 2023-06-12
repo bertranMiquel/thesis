@@ -1,1 +1,1 @@
-..\py_structure.md
+../py_structure.md
