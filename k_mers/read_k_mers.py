@@ -9,6 +9,14 @@ import yaml
 from pathlib import Path
 import species.map_species_name as msn
 
+import logging
+
+logging.basicConfig(
+    format='%(asctime)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
+    level=logging.INFO,
+)
+
 # Define a function to read a single feather file and return a dictionary
 def read_file(filepath, mode = 'strict'):
     if mode in filepath:
@@ -54,7 +62,7 @@ def process_folder(path: Path, mode: str):
     return data_list
 
 
-def update_k_mers(input_file_path: Path, mode: str) -> None:
+def update_k_mers_old(input_file_path: Path, mode: str) -> None:
     # Read all the feather files of the specified folder and store them into a list of dictionaries
     data_list = process_folder(input_file_path, mode=mode)
 
@@ -68,3 +76,36 @@ def update_k_mers(input_file_path: Path, mode: str) -> None:
 
     # Save the dataframe as a feather file
     df_list.to_feather('../Data/Intermediate/accumulated/df_k_mers_' + mode + '.feather')
+
+def update_k_mers(input_file_path: Path, mode:str) -> None:
+    # Now, all the k_mers for a species are given in a single file
+    # Merge them together and save them in a single file
+    # Specifying the species name and the binoimal name
+    df_k_mers = pd.DataFrame()
+
+    # Read all the feather files of the specified folder and store them into a list of dictionaries
+    # Map the species name to the filename with the help of the config file
+    dict_species = msn.map_species_to_binomial()
+    species_bin = [k for k, v in dict_species.items()]
+    for file in os.listdir(input_file_path):
+        # Remove '.features.feather' part of the string and check if it is in the list of species
+        if file.split('.')[0] in species_bin:
+            # Check if it is strict or relaxed mode
+            # Indicated between the first and second dot
+            if file.split('.')[1] == mode:
+                # Read the feather file
+                data = pd.read_feather(os.path.join(input_file_path, file))
+                # Add the species name to the dataframe using the dictionary
+                data['species_bin'] = file.split('.')[0]
+                data['species_name'] = dict_species[file.split('.')[0]]
+                df_k_mers= pd.concat([df_k_mers, data])
+        else:
+            logging.warning(f'File {file} not in the list of species. Please include it in the config file.')
+            continue
+    
+    # Save the dataframe as a feather file
+    df_k_mers.reset_index(drop=True, inplace=True)
+    # All columns and its names as strings
+    df_k_mers = df_k_mers.astype(str)
+    df_k_mers.columns = df_k_mers.columns.astype(str)
+    df_k_mers.to_feather('../Data/Intermediate/accumulated/df_k_mers_' + mode + '.feather')
