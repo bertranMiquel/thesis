@@ -4,7 +4,7 @@
 import pandas as pd
 import time
 import numpy as np
-import xlsxwriter
+# import xlsxwriter
 from matplotlib import pyplot as plt
 import logging
 import argparse
@@ -28,16 +28,22 @@ def alignment(mode, df_k_mers: pd.DataFrame, k_mers_counter: pd.DataFrame,
     # Add the timestamp to the output folder path
     output_path = swco.create_output_folder(output_path)
 
-   # If the target_species is empty, we will align all the species vs. all the species
+    # If the target_species is empty, we will align all the species vs. all the species
     if not target_species:
         target_species = df_annotations['species'].unique()
+    else:
+        print('Target species: ', target_species)
+        # Check if the target species are in the dataframe
+        if not target_species in df_annotations['species'].unique():
+            raise Exception('The target species introduced do not belong to the dataframe')
+
 
     # If the target_scaffold is empty, we will align all the scaffolds of the target_species vs. all the scaffolds of the query_species
     if not target_scaffold:
         target_scaffold = df_annotations.loc[df_annotations['species'].isin(target_species), 'replicon_accession'].unique()
     else:
         # Check if the target scaffold belongs to the target species
-        if not df_annotations.loc[df_annotations['replicon_accession'].isin(target_scaffold), 'species'].isin(target_species).all():
+        if not target_scaffold in df_annotations.loc[df_annotations['species'].unique() in target_species, 'replicon_accession'].unique():
             raise Exception('The target scaffolds introduced do not belong to one of the target species')
 
     # For visualization purposes, initialise some variables
@@ -86,12 +92,13 @@ def alignment(mode, df_k_mers: pd.DataFrame, k_mers_counter: pd.DataFrame,
             # This is implemented in the k_mers_metric.py script
             
             # Filter to keep only the relevant query scaffolds for this alignment
-            k_mers_counter_query = k_mers_counter.loc[k_mers_counter['replicon_accession'].isin(query_scaffold), ['species', 'replicon_accession', 'k', 'total_k_mers']]
+            k_mers_counter_query = k_mers_counter.loc[(k_mers_counter['replicon_accession'].isin(query_scaffold)) | (k_mers_counter['replicon_accession'] == target_sc), ['species', 'replicon_accession', 'k', 'total_k_mers']]
+
 
             # Return the similar scaffolds ordered by species and similarity descending
             df_scaffold_cand = pd.DataFrame()
+            logging.info(f'Calculating similar scaffolds for {target_sp} {target_sc}')
             df_scaffold_cand = kmm.k_mers_to_metric(target_sc, level='replicon_accession', k_mers_counter=k_mers_counter_query, df_length=df_replicon_accession_length, df_k_mers=df_k_mers)
-
             if df_scaffold_cand.empty:
                 logging.warning(f'No similar scaffolds for {target_sp} {target_sc}')
                 continue
@@ -169,7 +176,7 @@ def alignment(mode, df_k_mers: pd.DataFrame, k_mers_counter: pd.DataFrame,
                 # | target locus | Result | query locus |
                 # |--------------|--------|-------------|
                 # | ABBB         |  Match | ABBB        |
-                # | ABBB        |  Gap    | -           |
+                # | ABBB         |  Gap   | -           |
                 # 
                 # Scenarios like this should be tagged as a Duplicate genes, instead of a Gap
                 # There is a function to do this
@@ -193,10 +200,12 @@ def alignment(mode, df_k_mers: pd.DataFrame, k_mers_counter: pd.DataFrame,
                 # Also, another dataframe called blocks for doing the alignment visualization
                 len_target = len(df_target)
                 len_query = len(df_query)
-                index_target_no_gaps, actual_results, blocks = swco.summary_results(writer, aligned_query, aligned_target, index_query, index_target, align, target_sp, target_sc, query_sp, query_sc, len_target, len_query, sim_ratio, params, blocks, align_counter)
+                actual_results = pd.DataFrame()
+                actual_results, blocks, index_target_no_gaps = swco.summary_results(writer, aligned_query, aligned_target, index_query, index_target, align, target_sp, target_sc, query_sp, query_sc, len_target, len_query, sim_ratio, params, blocks, align_counter)
                 
                 # Keep track of the results per target_scaffold
                 # Aim is to have a table with some summarizing KPIs for all the alignments done
+                actual_results = pd.DataFrame(actual_results)
                 results = pd.concat([results, actual_results])
 
                 # Create a heatmap with the matrix information to represent which part of the sequences are more similar
@@ -222,21 +231,29 @@ def alignment(mode, df_k_mers: pd.DataFrame, k_mers_counter: pd.DataFrame,
             writer.sheets['Results'].activate()
             writer.close()   
 
-    # Before saving blocks, let's add column names to the list
-    blocks = pd.DataFrame(blocks)
-    blocks.columns = ['species', 'replicon_accession', 'target_replicon_accession', 'comparing_species', 'alignment_id', 'start', 'stop', 'match_perc']
-    blocks.to_csv(output_path + '/blocks.csv', index = False)
+
+    if blocks:
+        logging.info('No blocks aligned')
+        
+    else:
+        logging.info('Writing blocks.csv')
+        # Before saving blocks, let's add column names to the list
+        blocks = pd.DataFrame(blocks)
+        # Make them the column names
+        blocks.columns = ['species', 'replicon_accession', 'target_replicon_accession', 'comparing_species', 'alignment_id', 'start', 'stop', 'match_perc']
+
+        blocks.to_csv(output_path + '/blocks.csv', index = False)
 
 
 if __name__ == '__main__':
     # Set the arguments
     parser = argparse.ArgumentParser(description='Smith-Waterman algorithm for aligning sequences')
     parser.add_argument('-m', '--mode', type=str, help='Mode of the algorithm', default='strict')
-    parser.add_argument('-tsp', '--target_species', type=str, help='Target species', default=[])
-    parser.add_argument('-tsc', '--target_scaffold', type=str, help='Target scaffold', default=[])
-    parser.add_argument('-qsp', '--query_species', type=str, help='Query species', default=[])
-    parser.add_argument('-qsc', '--query_scaffold', type=str, help='Query scaffold', default=[])
-    parser.add_argument('-o', '--output_path', type=str, help='Output path', default='../Data/Intermediate/alignments/')
+    parser.add_argument('-tsp', '--target_species', nargs='+', help='Target species', default=[])
+    parser.add_argument('-tsc', '--target_scaffold', nargs='+', help='Target scaffold', default=[])
+    parser.add_argument('-qsp', '--query_species', nargs='+', help='Query species', default=[])
+    parser.add_argument('-qsc', '--query_scaffold', nargs='+', help='Query scaffold', default=[])
+    parser.add_argument('-o', '--output_path', type=str, help='Output path', default='../Data/Intermediate/alignment/')
     args = parser.parse_args()
 
     # Set the logging configuration

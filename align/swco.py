@@ -8,12 +8,21 @@ import os
 import matplotlib.pyplot as plt
 import seaborn as sns
 import time
+from datetime import datetime as dt
+import logging
+
+logging.basicConfig(
+    format='%(asctime)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
+    level=logging.INFO,
+)
+
 
 # Create the ouput folder if it does not exist
 def create_output_folder(output_path = '../Data/Intermediate/alignment/') -> str: # Actually is a path
     # Create the output folder
     timestamp = dt.now().strftime('%Y%m%d_%H%M%S')
-    output_path = output_path + timestamp
+    output_path = output_path + timestamp + '/'
 
     # Create the output folder
     os.mkdir(output_path)
@@ -307,17 +316,17 @@ def summary_results(writer, aligned_query, aligned_target, index_query, index_ta
                     target_sp, target_sc, query_sp, query_sc, 
                     len_target, len_query, score, params, blocks, align_counter):
 
-    # # Keep the values of the aligned indeces
-    # index_query_no_gaps = []
-    # index_target_no_gaps = []
+    # Keep the values of the aligned indeces
+    index_query_no_gaps = []
+    index_target_no_gaps = []
 
-    # # Remove gaps
-    # index_query_no_gaps = list(filter(lambda c: c!= '-', index_query))
-    # index_target_no_gaps = list(filter(lambda c: c!= '-', index_target))
+    # Remove gaps
+    index_query_no_gaps = list(filter(lambda c: c!= '-', index_query))
+    index_target_no_gaps = list(filter(lambda c: c!= '-', index_target))
 
-    # # Convert their elements to integers
-    # index_query_no_gaps = list(map(int, index_query_no_gaps))
-    # index_target_no_gaps = list(map(int, index_target_no_gaps))
+    # Convert their elements to integers
+    index_query_no_gaps = [int(i) for i in index_query_no_gaps]
+    index_target_no_gaps = [int(i) for i in index_target_no_gaps]
 
     target_name = target_sp + '_' + target_sc
     query_name = query_sp + '_' + query_sc
@@ -369,16 +378,8 @@ def summary_results(writer, aligned_query, aligned_target, index_query, index_ta
     summary.to_excel(writer, sheet_name = 'Sum_' + query_name_excel, index = False)
 
     # Keep track of the results among all the scaffolds
-    actual_results = pd.DataFrame(data = {
-                                    'Target Species':[target_sp], 
-                                    'Target Scaffold': [target_sc], 
-                                    'Query Species':[query_sp], 
-                                    'Query Scaffold': [query_sc], 
-                                    '% Covered Target sequence': [perc_align_target], 
-                                    '% Covered Query sequence': [perc_align_query], 
-                                    'Length Aligned sequence': [align.shape[0]]
-                                })
-
+    actual_results = pd.DataFrame(data = {target_sp, target_sc, query_sp, query_sc, perc_align_target, perc_align_query, align.shape[0]})
+    
     # Keep the alignment results for alignment visualization
     # We want to keep the starting and stopping positions of the alignment in the target and query sequences
     # target_sca is introduced in both of them in order to aggrupate them in the plot
@@ -395,7 +396,7 @@ def summary_results(writer, aligned_query, aligned_target, index_query, index_ta
     blocks.append([query_sp, query_sc, target_sc, [target_sp, query_sp], align_counter, min(align['Query start'].astype('float')), max(align['Query stop'].astype('float')), match_perc])
 
 
-    return index_target_no_gaps, actual_results, blocks
+    return actual_results, blocks, index_target_no_gaps
 
 
 # Create a heatmap with the matrix information to represent which part of the aligned sequences are more similar

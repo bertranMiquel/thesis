@@ -96,7 +96,7 @@ def update_k_mers(input_file_path: Path, mode:str) -> None:
                 # Read the feather file
                 data = pd.read_feather(os.path.join(input_file_path, file))
                 # Add the species name to the dataframe using the dictionary
-                data['species_bin'] = file.split('.')[0]
+                data['species'] = file.split('.')[0]
                 data['species_name'] = dict_species[file.split('.')[0]]
                 df_k_mers= pd.concat([df_k_mers, data])
         else:
@@ -105,7 +105,7 @@ def update_k_mers(input_file_path: Path, mode:str) -> None:
     
     # Save the dataframe as a feather file
     df_k_mers.reset_index(drop=True, inplace=True)
-    # All columns and its names as strings
-    df_k_mers = df_k_mers.astype(str)
-    df_k_mers.columns = df_k_mers.columns.astype(str)
+    # # All columns and its names as strings
+    # df_k_mers = df_k_mers.astype(str)
+    # df_k_mers.columns = df_k_mers.columns.astype(str)
     df_k_mers.to_feather('../Data/Intermediate/accumulated/df_k_mers_' + mode + '.feather')
