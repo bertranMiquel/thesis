@@ -223,10 +223,11 @@ def merge(seq_1, seq_2, aligned_seq_1, index_seq_1, aligned_seq_2, index_seq_2) 
                 left_index=True))           
 
     # Classify the alignment into Match, Mismatch, Gap and Duplicate
-    all['Result'] = np.where(all['Query Sequence locus'] == all['Target Sequence locus'],
-                        np.where(((all['Query Sequence locus'] == '-') | (all['Target Sequence locus'] == '-')),
-                            'Gap', 'Match'),
-                            'Mismatch')    #np.where(all['Query Sequence strand'] == all['Target Sequence strand'], 'Match','Inversion'),
+    all['Result'] = np.where((all['Query Sequence locus'] == '-') | (all['Target Sequence locus'] == '-'), 
+                        'Gap',
+                        np.where(all['Query Sequence locus'] == all['Target Sequence locus'],
+                             'Match',
+                            'Mismatch'))    #np.where(all['Query Sequence strand'] == all['Target Sequence strand'], 'Match','Inversion'),
 
     # Reorder the columns
     all = all[[
@@ -378,7 +379,7 @@ def summary_results(writer, aligned_query, aligned_target, index_query, index_ta
     summary.to_excel(writer, sheet_name = 'Sum_' + query_name_excel, index = False)
 
     # Keep track of the results among all the scaffolds
-    actual_results = pd.DataFrame(data = {target_sp, target_sc, query_sp, query_sc, perc_align_target, perc_align_query, align.shape[0]})
+    actual_results = [target_sp, target_sc, query_sp, query_sc, perc_align_target, perc_align_query, align.shape[0]]
     
     # Keep the alignment results for alignment visualization
     # We want to keep the starting and stopping positions of the alignment in the target and query sequences

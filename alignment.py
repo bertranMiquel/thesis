@@ -37,13 +37,14 @@ def alignment(mode, df_k_mers: pd.DataFrame, k_mers_counter: pd.DataFrame,
         if not target_species in df_annotations['species'].unique():
             raise Exception('The target species introduced do not belong to the dataframe')
 
-
     # If the target_scaffold is empty, we will align all the scaffolds of the target_species vs. all the scaffolds of the query_species
     if not target_scaffold:
         target_scaffold = df_annotations.loc[df_annotations['species'].isin(target_species), 'replicon_accession'].unique()
     else:
         # Check if the target scaffold belongs to the target species
-        if not target_scaffold in df_annotations.loc[df_annotations['species'].unique() in target_species, 'replicon_accession'].unique():
+        all_scaffold = df_annotations.loc[df_annotations['species'].isin(target_species), 'replicon_accession'].unique().tolist()
+        all_present = all(item in all_scaffold for item in target_scaffold)
+        if not all_present:
             raise Exception('The target scaffolds introduced do not belong to one of the target species')
 
     # For visualization purposes, initialise some variables
@@ -114,8 +115,12 @@ def alignment(mode, df_k_mers: pd.DataFrame, k_mers_counter: pd.DataFrame,
             writer = pd.ExcelWriter(f'{output_path}/{target_sp}_{target_sc}.xlsx', engine='xlsxwriter')
 
             # Write the results and the align species variables are needed
-            results = pd.DataFrame()
+            headers = ['Target Species', 'Target Scaffold', 'Query Species',
+             'Query Scaffold', '% Covered Target sequence', '% Covered Query sequence', 'Number of aligned genes']
+            
             align_species = pd.DataFrame()
+
+            results = []
 
             # Go through the list of similar scaffolds to apply Smith-Waterman algorithm
             for query_sp, query_sc in zip(df_scaffold_cand['species'], df_scaffold_cand['replicon_accession']):
@@ -141,11 +146,12 @@ def alignment(mode, df_k_mers: pd.DataFrame, k_mers_counter: pd.DataFrame,
                 align_counter += 1
 
                 # Initialise variables for the alignment
+                # Reset them, so no values from the past alignment are kept
                 aligned_query = []
                 aligned_target = []
                 index_query = []
                 index_target = []
-                matrix = [[]]
+                matrix = np.zeros((len(df_target), len(df_query)), dtype=int)
 
                 ## Apply Smith-Waterman algorithm
                 # The results are stored in a dataframe
@@ -200,13 +206,10 @@ def alignment(mode, df_k_mers: pd.DataFrame, k_mers_counter: pd.DataFrame,
                 # Also, another dataframe called blocks for doing the alignment visualization
                 len_target = len(df_target)
                 len_query = len(df_query)
-                actual_results = pd.DataFrame()
+                
                 actual_results, blocks, index_target_no_gaps = swco.summary_results(writer, aligned_query, aligned_target, index_query, index_target, align, target_sp, target_sc, query_sp, query_sc, len_target, len_query, sim_ratio, params, blocks, align_counter)
                 
-                # Keep track of the results per target_scaffold
-                # Aim is to have a table with some summarizing KPIs for all the alignments done
-                actual_results = pd.DataFrame(actual_results)
-                results = pd.concat([results, actual_results])
+                results.append(actual_results)
 
                 # Create a heatmap with the matrix information to represent which part of the sequences are more similar
                 swco.heatmap(writer, matrix, target_sp, target_sc, query_sp, query_sc, output_path)
@@ -227,12 +230,14 @@ def alignment(mode, df_k_mers: pd.DataFrame, k_mers_counter: pd.DataFrame,
             swco.write_alignment(align_species, query_sp, query_sc, writer)
 
             # Write the results dataframe
-            results.to_excel(writer, sheet_name = 'Results', index = False)
+            df_results = pd.DataFrame(results, columns=headers)
+            df_results.to_excel(writer, sheet_name = 'Results', index = False)
             writer.sheets['Results'].activate()
             writer.close()   
 
-
-    if blocks:
+    # Write the blocks dataframe
+    # If there are no blocks, we will not write the file
+    if not blocks:
         logging.info('No blocks aligned')
         
     else:

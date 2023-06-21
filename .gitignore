@@ -4,5 +4,5 @@ Old/
 k_mers_generation/
 .ipynb_checkpoints/
 
-function_representation.ipynb
+#function_representation.ipynb
 test.ipynb
